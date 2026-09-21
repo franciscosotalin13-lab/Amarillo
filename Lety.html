@@ -3,56 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para Lety 🐹</title>
+    <title>Para Lety 🌻🐹</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            background: linear-gradient(135deg, #2b1055 0%, #7597de 100%);
+            background: linear-gradient(135deg, #2c1a05 0%, #4a2e0a 50%, #1f1203 100%);
             min-height: 100vh; display: flex; flex-direction: column;
             align-items: center; justify-content: center; overflow: hidden;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #fff; text-align: center; padding: 20px;
         }
         .container {
-            position: relative; z-index: 10; max-width: 400px; width: 100%;
-            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2); padding: 30px 20px;
-            border-radius: 20px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            position: relative; z-index: 10; max-width: 420px; width: 100%;
+            background: rgba(255, 235, 150, 0.07); backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 215, 0, 0.25); padding: 35px 25px;
+            border-radius: 25px; box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
             animation: fadeIn 1.5s ease-out;
         }
-        h1 { font-size: 2.2rem; color: #ff9cf5; margin-bottom: 10px; text-shadow: 0 0 15px rgba(255, 156, 245, 0.6); }
-        .subtitle { font-size: 1.1rem; color: #f0f0f0; margin-bottom: 25px; font-weight: 300; }
-        .bouquet { font-size: 5rem; margin: 20px 0; animation: float 3s ease-in-out infinite; }
-        .particle { position: absolute; font-size: 1.5rem; animation: fall linear infinite; z-index: 1; opacity: 0.8; }
-        @keyframes float { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-10px) scale(1.05); } }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        h1 { font-size: 2.3rem; color: #ffe600; margin-bottom: 12px; text-shadow: 0 0 20px rgba(255, 230, 0, 0.6); font-weight: 700; }
+        .subtitle { font-size: 1.1rem; color: #fce883; margin-bottom: 20px; font-weight: 400; line-height: 1.5; }
+        .message { font-size: 0.95rem; color: #d6d6d6; margin-bottom: 25px; line-height: 1.6; background: rgba(0,0,0,0.2); padding: 12px; border-radius: 12px; }
+        .bouquet-box { font-size: 4.5rem; margin: 15px 0; animation: float 3s ease-in-out infinite; display: flex; justify-content: center; gap: 10px; }
+        .particle { position: absolute; font-size: 1.6rem; animation: fall linear infinite; z-index: 1; opacity: 0.85; }
+        @keyframes float { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-12px) scale(1.08); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fall {
             0% { transform: translateY(-50px) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+            100% { transform: translateY(105vh) rotate(360deg); opacity: 0; }
         }
-        .footer-note { margin-top: 20px; font-size: 0.85rem; color: #ff9cf5; opacity: 0.9; font-weight: 600; }
+        .footer-note { margin-top: 15px; font-size: 0.9rem; color: #ffdf00; font-weight: 600; letter-spacing: 0.5px; }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="bouquet">🐹✨</div>
-        <h1>Lety, mi hermana</h1>
-        <div class="subtitle">Un detalle tierno lleno de hámsters y alegría para ti</div>
-        <div class="footer-note">💖 Con todo el cariño 💖</div>
+        <div class="bouquet-box"><span>🌻</span><span>🐹</span><span>🌻</span></div>
+        <h1>Para Lety, mi hermana</h1>
+        <div class="subtitle">¡Feliz día de las flores amarillas! 💛</div>
+        <div class="message">
+            Que este detalle tan brillante ilumine tu día tanto como la ternura de unos hámsters curiosos corriendo por ahí. ¡Te quiero muchísimo!
+        </div>
+        <div class="footer-note">✨ Mucha alegría y buena energía ✨</div>
     </div>
     <script>
         function createParticle() {
             const p = document.createElement('div');
             p.classList.add('particle');
-            const symbols = ['🐹', '🌻', '✨', '🐾', '💛'];
+            const symbols = ['🌻', '🐹', '🌼', '✨', '💛', '🐾'];
             p.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
             p.style.left = Math.random() * 100 + 'vw';
-            p.style.top = -30 + 'px';
+            p.style.top = -40 + 'px';
             const duration = Math.random() * 3 + 4;
             p.style.animationDuration = duration + 's';
             document.body.appendChild(p);
             setTimeout(() => p.remove(), duration * 1000);
         }
-        setInterval(createParticle, 350);
+        setInterval(createParticle, 300);
     </script>
 </body>
 </html>

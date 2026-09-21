@@ -7,56 +7,116 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            background: linear-gradient(135deg, #2c1a05 0%, #4a2e0a 50%, #1f1203 100%);
+            background: radial-gradient(circle at center, #2c1a05 0%, #120902 100%);
             min-height: 100vh; display: flex; flex-direction: column;
             align-items: center; justify-content: center; overflow: hidden;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #fff; text-align: center; padding: 20px;
         }
-        .container {
-            position: relative; z-index: 10; max-width: 420px; width: 100%;
-            background: rgba(255, 235, 150, 0.07); backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 215, 0, 0.25); padding: 35px 25px;
-            border-radius: 25px; box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
-            animation: fadeIn 1.5s ease-out;
+
+        /* Pantalla de inicio (Regalo cerrado) */
+        #welcome-screen {
+            position: absolute; z-index: 20; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; transition: opacity 0.8s ease, transform 0.8s ease;
         }
-        h1 { font-size: 2.3rem; color: #ffe600; margin-bottom: 12px; text-shadow: 0 0 20px rgba(255, 230, 0, 0.6); font-weight: 700; }
-        .subtitle { font-size: 1.1rem; color: #fce883; margin-bottom: 20px; font-weight: 400; line-height: 1.5; }
-        .message { font-size: 0.95rem; color: #d6d6d6; margin-bottom: 25px; line-height: 1.6; background: rgba(0,0,0,0.2); padding: 12px; border-radius: 12px; }
-        .bouquet-box { font-size: 4.5rem; margin: 15px 0; animation: float 3s ease-in-out infinite; display: flex; justify-content: center; gap: 10px; }
-        .particle { position: absolute; font-size: 1.6rem; animation: fall linear infinite; z-index: 1; opacity: 0.85; }
-        @keyframes float { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-12px) scale(1.08); } }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        .flower-button {
+            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            border: none; width: 110px; height: 110px; border-radius: 50%;
+            font-size: 3.5rem; cursor: pointer; box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+            display: flex; align-items: center; justify-content: center;
+            animation: pulse 2s infinite; transition: transform 0.3s ease;
+        }
+        .flower-button:active { transform: scale(0.9); }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 20px rgba(255, 215, 0, 0.5); }
+            50% { transform: scale(1.08); box-shadow: 0 0 40px rgba(255, 215, 0, 0.9); }
+            100% { transform: scale(1); box-shadow: 0 0 20px rgba(255, 215, 0, 0.5); }
+        }
+
+        .tap-text {
+            margin-top: 20px; font-size: 1.1rem; color: #ffe600; letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(255, 230, 0, 0.5); animation: fadeInOut 1.5s infinite alternate;
+        }
+        @keyframes fadeInOut { from { opacity: 0.6; } to { opacity: 1; } }
+
+        /* Tarjeta principal (Oculta al inicio) */
+        .card {
+            position: relative; z-index: 10; max-width: 400px; width: 100%;
+            background: rgba(255, 235, 150, 0.07); backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 215, 0, 0.3); padding: 35px 25px;
+            border-radius: 25px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+            opacity: 0; transform: scale(0.5) translateY(50px);
+            transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+        }
+
+        .card.show {
+            opacity: 1; transform: scale(1) translateY(0); pointer-events: auto;
+        }
+
+        h1 { font-size: 2.2rem; color: #ffe600; margin-bottom: 12px; text-shadow: 0 0 15px rgba(255, 230, 0, 0.6); }
+        .subtitle { font-size: 1.1rem; color: #fce883; margin-bottom: 20px; font-weight: 400; }
+        .message { font-size: 0.95rem; color: #d6d6d6; margin-bottom: 25px; line-height: 1.6; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 15px; }
+        .bouquet-box { font-size: 4.5rem; margin: 15px 0; display: flex; justify-content: center; gap: 10px; animation: float 3s ease-in-out infinite; }
+        
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+        .particle { position: absolute; font-size: 1.5rem; animation: fall linear infinite; z-index: 1; opacity: 0.85; }
         @keyframes fall {
             0% { transform: translateY(-50px) rotate(0deg); opacity: 1; }
             100% { transform: translateY(105vh) rotate(360deg); opacity: 0; }
         }
-        .footer-note { margin-top: 15px; font-size: 0.9rem; color: #ffdf00; font-weight: 600; letter-spacing: 0.5px; }
+        .footer-note { font-size: 0.9rem; color: #ffdf00; font-weight: 600; }
     </style>
 </head>
 <body>
-    <div class="container">
+
+    <!-- Pantalla interactiva para abrir la flor -->
+    <div id="welcome-screen" onclick="openGift()">
+        <button class="flower-button">🌻</button>
+        <div class="tap-text">Toca para abrir tu sorpresa 💛</div>
+    </div>
+
+    <!-- Tarjeta secreta que aparece -->
+    <div class="card" id="main-card">
         <div class="bouquet-box"><span>🌻</span><span>🐹</span><span>🌻</span></div>
         <h1>Para Lety, mi hermana</h1>
         <div class="subtitle">¡Feliz día de las flores amarillas! 💛</div>
         <div class="message">
-            Que este detalle tan brillante ilumine tu día tanto como la ternura de unos hámsters curiosos corriendo por ahí. ¡Te quiero muchísimo!
+            Que este detalle ilumine tu día por completo, acompañado de toda la ternura de unos hámsters curiosos y mucha alegría. ¡Te quiero muchísimo!
         </div>
-        <div class="footer-note">✨ Mucha alegría y buena energía ✨</div>
+        <div class="footer-note">✨ Hecho con todo el cariño ✨</div>
     </div>
+
     <script>
-        function createParticle() {
-            const p = document.createElement('div');
-            p.classList.add('particle');
-            const symbols = ['🌻', '🐹', '🌼', '✨', '💛', '🐾'];
-            p.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
-            p.style.left = Math.random() * 100 + 'vw';
-            p.style.top = -40 + 'px';
-            const duration = Math.random() * 3 + 4;
-            p.style.animationDuration = duration + 's';
-            document.body.appendChild(p);
-            setTimeout(() => p.remove(), duration * 1000);
+        function openGift() {
+            const welcome = document.getElementById('welcome-screen');
+            const card = document.getElementById('main-card');
+            
+            welcome.style.opacity = '0';
+            welcome.style.transform = 'scale(1.5)';
+            setTimeout(() => {
+                welcome.style.display = 'none';
+                card.classList.add('show');
+                startParticles();
+            }, 500);
         }
-        setInterval(createParticle, 300);
+
+        function startParticles() {
+            setInterval(() => {
+                const p = document.createElement('div');
+                p.classList.add('particle');
+                const symbols = ['🌻', '🐹', '🌼', '✨', '💛', '🐾'];
+                p.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
+                p.style.left = Math.random() * 100 + 'vw';
+                p.style.top = -40 + 'px';
+                const duration = Math.random() * 3 + 4;
+                p.style.animationDuration = duration + 's';
+                document.body.appendChild(p);
+                setTimeout(() => p.remove(), duration * 1000);
+            }, 250);
+        }
     </script>
 </body>
 </html>

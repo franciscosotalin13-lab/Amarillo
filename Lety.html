@@ -3,114 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lety, tus flores amarillas 🌻</title>
+    <title>Para Lety 🌻</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            background: radial-gradient(circle at center, #261706 0%, #0a0401 100%);
+            background: #0f0802;
+            background: radial-gradient(circle at center, #2e1700 0%, #0a0500 100%);
             min-height: 100vh; display: flex; flex-direction: column;
             align-items: center; justify-content: center; overflow: hidden;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #fff; text-align: center; padding: 20px;
+            font-family: system-ui, -apple-system, sans-serif; color: #fff;
         }
 
-        #welcome-screen {
-            position: absolute; z-index: 20; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; transition: opacity 0.6s ease, transform 0.6s ease;
-            cursor: pointer;
+        /* Botón inicial */
+        #intro {
+            position: absolute; z-index: 50; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; transition: all 0.8s ease;
         }
-
-        .flower-btn {
-            background: linear-gradient(135deg, #ffd700, #ff8c00);
-            border: none; width: 130px; height: 130px; border-radius: 50%;
-            font-size: 4.5rem; cursor: pointer; box-shadow: 0 0 50px rgba(255, 215, 0, 0.8);
+        .btn-flower {
+            background: linear-gradient(145deg, #ffcc00, #ff8800);
+            border: none; width: 140px; height: 140px; border-radius: 50%;
+            font-size: 5rem; cursor: pointer;
+            box-shadow: 0 0 40px rgba(255, 170, 0, 0.6), inset 0 0 20px rgba(255,255,255,0.4);
+            animation: breathe 2s infinite ease-in-out;
             display: flex; align-items: center; justify-content: center;
-            animation: pulseBtn 1.8s infinite;
+            -webkit-tap-highlight-color: transparent;
         }
-
-        @keyframes pulseBtn {
-            0% { transform: scale(1); box-shadow: 0 0 30px rgba(255, 215, 0, 0.6); }
-            50% { transform: scale(1.12); box-shadow: 0 0 60px rgba(255, 215, 0, 1); }
-            100% { transform: scale(1); box-shadow: 0 0 30px rgba(255, 215, 0, 0.6); }
-        }
-
+        .btn-flower:active { transform: scale(0.85); box-shadow: 0 0 60px #ffaa00; }
         .tap-text {
-            margin-top: 25px; font-size: 1.25rem; color: #ffe600; letter-spacing: 1px;
-            text-shadow: 0 0 15px rgba(255, 230, 0, 0.7); animation: blink 1.2s infinite alternate;
+            margin-top: 30px; font-size: 1.3rem; font-weight: 600; color: #ffcc00;
+            text-transform: uppercase; letter-spacing: 3px;
+            text-shadow: 0 0 15px rgba(255, 204, 0, 0.8); animation: pulseText 1.5s infinite alternate;
         }
-        @keyframes blink { from { opacity: 0.5; } to { opacity: 1; } }
 
-        .card {
-            position: relative; z-index: 10; max-width: 420px; width: 100%;
-            background: rgba(255, 235, 150, 0.08); backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 215, 0, 0.4); padding: 40px 25px;
-            border-radius: 35px; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9);
-            opacity: 0; transform: scale(0.3) translateY(50px);
-            transition: all 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            pointer-events: none;
+        /* Tarjeta principal */
+        #card {
+            position: relative; z-index: 10; width: 90%; max-width: 450px;
+            background: rgba(255, 200, 0, 0.05); backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px); border: 1px solid rgba(255, 215, 0, 0.2);
+            padding: 50px 30px; border-radius: 40px; text-align: center;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8), inset 0 0 20px rgba(255, 215, 0, 0.1);
+            opacity: 0; transform: scale(0.8) translateY(30px);
+            transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1.1); pointer-events: none;
         }
-        .card.show { opacity: 1; transform: scale(1) translateY(0); pointer-events: auto; }
+        #card.active { opacity: 1; transform: scale(1) translateY(0); pointer-events: auto; }
 
-        h1 { font-size: 2.3rem; color: #ffe600; margin-bottom: 20px; text-shadow: 0 0 20px rgba(255, 230, 0, 0.7); }
+        .main-emojis { font-size: 4.5rem; display: flex; justify-content: center; gap: 15px; margin-bottom: 25px; }
+        .main-emojis span { animation: float 3s infinite ease-in-out; }
+        .main-emojis span:nth-child(2) { animation-delay: 0.5s; font-size: 5.5rem; }
+        .main-emojis span:nth-child(3) { animation-delay: 1s; }
         
-        .icons-row {
-            display: flex; justify-content: center; align-items: center; gap: 15px; margin: 20px 0;
+        h1 { font-size: 2.6rem; font-weight: 800; color: #ffdd00; line-height: 1.2; text-shadow: 0 0 25px rgba(255, 221, 0, 0.6); }
+
+        /* Partículas */
+        .particle {
+            position: absolute; pointer-events: none; z-index: 1;
+            animation: fall linear forwards;
         }
-        .flower-big { font-size: 4.5rem; animation: float 3s ease-in-out infinite; }
-        .hamster-bounce { font-size: 4rem; animation: bounce 1.5s ease-in-out infinite; }
 
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
-        @keyframes bounce { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-15px) rotate(5deg); } }
-
-        .particle { position: absolute; font-size: 1.6rem; animation: fall linear infinite; z-index: 1; opacity: 0.85; }
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 40px rgba(255, 170, 0, 0.6); }
+            50% { transform: scale(1.1); box-shadow: 0 0 80px rgba(255, 170, 0, 1); }
+        }
+        @keyframes pulseText { from { opacity: 0.4; } to { opacity: 1; } }
+        @keyframes float { 0%, 100% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-15px) rotate(5deg); } }
         @keyframes fall {
-            0% { transform: translateY(-50px) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(105vh) rotate(360deg); opacity: 0; }
+            0% { transform: translate(var(--startX), -50px) rotate(0deg) scale(var(--scale)); opacity: 0; }
+            10% { opacity: 1; }
+            100% { transform: translate(var(--endX), 110vh) rotate(var(--rot)) scale(var(--scale)); opacity: 0; }
         }
     </style>
 </head>
 <body>
 
-    <div id="welcome-screen" onclick="openSurprise()">
-        <button class="flower-btn">🌻</button>
-        <div class="tap-text">Toca para abrir 💛</div>
+    <div id="intro" onclick="startMagic()">
+        <button class="btn-flower">🌻</button>
+        <div class="tap-text">Tócala</div>
     </div>
 
-    <div class="card" id="main-card">
-        <div class="icons-row">
-            <span class="flower-big">🌻</span>
-            <span class="hamster-bounce">🐹</span>
-            <span class="flower-big">🌻</span>
+    <div id="card">
+        <div class="main-emojis">
+            <span>🌻</span>
+            <span>🐹</span>
+            <span>🌻</span>
         </div>
         <h1>Lety, tus flores amarillas</h1>
     </div>
 
     <script>
-        function openSurprise() {
-            const welcome = document.getElementById('welcome-screen');
-            const card = document.getElementById('main-card');
+        const emojis = ['🌻', '🐹', '✨', '💛', '🌼'];
+        
+        function createParticle(isExplosion = false) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.innerText = emojis[Math.floor(Math.random() * emojis.length)];
             
-            welcome.style.opacity = '0';
-            welcome.style.transform = 'scale(1.8)';
-            setTimeout(() => {
-                welcome.style.display = 'none';
-                card.classList.add('show');
-                startRain();
-            }, 500);
+            // Variables CSS dinámicas para trayectorias orgánicas
+            const startX = isExplosion ? '50vw' : Math.random() * 100 + 'vw';
+            const endX = (Math.random() * 100) + 'vw';
+            const scale = Math.random() * 0.8 + 0.8;
+            const rot = Math.random() * 360 + 'deg';
+            const duration = isExplosion ? (Math.random() * 2 + 2) : (Math.random() * 4 + 4);
+            
+            p.style.setProperty('--startX', isExplosion ? '0px' : startX);
+            p.style.setProperty('--endX', isExplosion ? (Math.random() * 200 - 100 + 'vw') : endX);
+            p.style.setProperty('--scale', scale);
+            p.style.setProperty('--rot', rot);
+            
+            p.style.left = isExplosion ? '50%' : startX;
+            p.style.top = isExplosion ? '50%' : '-50px';
+            p.style.fontSize = (Math.random() * 1.5 + 1.5) + 'rem';
+            p.style.animationDuration = duration + 's';
+            
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), duration * 1000);
         }
 
-        function startRain() {
-            setInterval(() => {
-                const p = document.createElement('div');
-                p.classList.add('particle');
-                const symbols = ['🌻', '🐹', '✨', '💛', '🌼'];
-                p.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
-                p.style.left = Math.random() * 100 + 'vw';
-                p.style.top = -40 + 'px';
-                const duration = Math.random() * 3 + 3;
-                p.style.animationDuration = duration + 's';
-                document.body.appendChild(p);
-                setTimeout(() => p.remove(), duration * 1000);
-            }, 180);
+        function startMagic() {
+            const intro = document.getElementById('intro');
+            const card = document.getElementById('card');
+            
+            // Ocultar botón
+            intro.style.transform = 'scale(2)';
+            intro.style.opacity = '0';
+            
+            // Activar explosión inicial
+            for(let i = 0; i < 40; i++) setTimeout(() => createParticle(true), i * 20);
+
+            setTimeout(() => {
+                intro.style.display = 'none';
+                card.classList.add('active');
+                // Iniciar lluvia constante
+                setInterval(() => createParticle(false), 200);
+            }, 600);
         }
     </script>
 </body>

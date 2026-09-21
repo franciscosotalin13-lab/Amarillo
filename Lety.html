@@ -7,7 +7,7 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            background: radial-gradient(circle at center, #1f1203 0%, #080401 100%);
+            background: radial-gradient(circle at center, #261706 0%, #0a0401 100%);
             min-height: 100vh; display: flex; flex-direction: column;
             align-items: center; justify-content: center; overflow: hidden;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #fff; text-align: center; padding: 20px;
@@ -16,43 +16,50 @@
         #welcome-screen {
             position: absolute; z-index: 20; display: flex; flex-direction: column;
             align-items: center; justify-content: center; transition: opacity 0.6s ease, transform 0.6s ease;
+            cursor: pointer;
         }
 
         .flower-btn {
             background: linear-gradient(135deg, #ffd700, #ff8c00);
-            border: none; width: 120px; height: 120px; border-radius: 50%;
-            font-size: 4rem; cursor: pointer; box-shadow: 0 0 40px rgba(255, 215, 0, 0.7);
+            border: none; width: 130px; height: 130px; border-radius: 50%;
+            font-size: 4.5rem; cursor: pointer; box-shadow: 0 0 50px rgba(255, 215, 0, 0.8);
             display: flex; align-items: center; justify-content: center;
-            animation: pulse 2s infinite; transition: transform 0.2s ease;
+            animation: pulseBtn 1.8s infinite;
         }
-        .flower-btn:active { transform: scale(0.9); }
 
-        @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 0 25px rgba(255, 215, 0, 0.5); }
-            50% { transform: scale(1.1); box-shadow: 0 0 50px rgba(255, 215, 0, 0.9); }
-            100% { transform: scale(1); box-shadow: 0 0 25px rgba(255, 215, 0, 0.5); }
+        @keyframes pulseBtn {
+            0% { transform: scale(1); box-shadow: 0 0 30px rgba(255, 215, 0, 0.6); }
+            50% { transform: scale(1.12); box-shadow: 0 0 60px rgba(255, 215, 0, 1); }
+            100% { transform: scale(1); box-shadow: 0 0 30px rgba(255, 215, 0, 0.6); }
         }
 
         .tap-text {
-            margin-top: 25px; font-size: 1.2rem; color: #ffe600; letter-spacing: 1px;
-            text-shadow: 0 0 10px rgba(255, 230, 0, 0.6); animation: blink 1.5s infinite alternate;
+            margin-top: 25px; font-size: 1.25rem; color: #ffe600; letter-spacing: 1px;
+            text-shadow: 0 0 15px rgba(255, 230, 0, 0.7); animation: blink 1.2s infinite alternate;
         }
         @keyframes blink { from { opacity: 0.5; } to { opacity: 1; } }
 
         .card {
-            position: relative; z-index: 10; max-width: 400px; width: 100%;
-            background: rgba(255, 235, 150, 0.08); backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 215, 0, 0.3); padding: 40px 25px;
-            border-radius: 30px; box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8);
-            opacity: 0; transform: scale(0.3) translateY(40px);
+            position: relative; z-index: 10; max-width: 420px; width: 100%;
+            background: rgba(255, 235, 150, 0.08); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 215, 0, 0.4); padding: 40px 25px;
+            border-radius: 35px; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9);
+            opacity: 0; transform: scale(0.3) translateY(50px);
             transition: all 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             pointer-events: none;
         }
         .card.show { opacity: 1; transform: scale(1) translateY(0); pointer-events: auto; }
 
-        h1 { font-size: 2.5rem; color: #ffe600; margin-bottom: 15px; text-shadow: 0 0 20px rgba(255, 230, 0, 0.6); }
-        .flower-big { font-size: 5rem; margin: 15px 0; animation: float 3s ease-in-out infinite; }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        h1 { font-size: 2.3rem; color: #ffe600; margin-bottom: 20px; text-shadow: 0 0 20px rgba(255, 230, 0, 0.7); }
+        
+        .icons-row {
+            display: flex; justify-content: center; align-items: center; gap: 15px; margin: 20px 0;
+        }
+        .flower-big { font-size: 4.5rem; animation: float 3s ease-in-out infinite; }
+        .hamster-bounce { font-size: 4rem; animation: bounce 1.5s ease-in-out infinite; }
+
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+        @keyframes bounce { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-15px) rotate(5deg); } }
 
         .particle { position: absolute; font-size: 1.6rem; animation: fall linear infinite; z-index: 1; opacity: 0.85; }
         @keyframes fall {
@@ -65,11 +72,15 @@
 
     <div id="welcome-screen" onclick="openSurprise()">
         <button class="flower-btn">🌻</button>
-        <div class="tap-text">Presiona aquí</div>
+        <div class="tap-text">Toca para abrir 💛</div>
     </div>
 
     <div class="card" id="main-card">
-        <div class="flower-big">🌻</div>
+        <div class="icons-row">
+            <span class="flower-big">🌻</span>
+            <span class="hamster-bounce">🐹</span>
+            <span class="flower-big">🌻</span>
+        </div>
         <h1>Lety, tus flores amarillas</h1>
     </div>
 
@@ -91,14 +102,15 @@
             setInterval(() => {
                 const p = document.createElement('div');
                 p.classList.add('particle');
-                p.innerHTML = '🌻';
+                const symbols = ['🌻', '🐹', '✨', '💛', '🌼'];
+                p.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
                 p.style.left = Math.random() * 100 + 'vw';
                 p.style.top = -40 + 'px';
                 const duration = Math.random() * 3 + 3;
                 p.style.animationDuration = duration + 's';
                 document.body.appendChild(p);
                 setTimeout(() => p.remove(), duration * 1000);
-            }, 200);
+            }, 180);
         }
     </script>
 </body>
